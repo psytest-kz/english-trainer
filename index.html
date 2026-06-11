@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>English ПТ Тренажёр</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0F172A; color: #F8FAFC; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; }
+  button { -webkit-tap-highlight-color: transparent; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+// ── Data ─────────────────────────────────────────────────────────────────
+const RAW = [{"id":1,"variant":"ВАРИАНТ 1","section":"Аудирование","num":1,"q":"Britain's Queen Elizabeth sent the world record-breaking pair ...","opts":{"A":"a congratulatory present","B":"a congratulatory card","C":"a congratulation card","D":"flowers"},"ans":"B","exp":"ЛОГИКА: «Queen Elizabeth sent the pair a congratulatory card». | Почему не A? Подарок (present) не упоминается. | Почему не C? «Congratulation card» — грамматически неверно. | Почему не D? Цветы не упоминаются."},{"id":2,"variant":"ВАРИАНТ 1","section":"Аудирование","num":2,"q":"The record breakers celebrated their anniversary with a party ...","opts":{"A":"in their friends' home","B":"in a hotel","C":"in their home","D":"in a restaurant"},"ans":"C","exp":"ЛОГИКА: «celebrated with a party in their home» — дома у себя. | Почему не A, B, D? Дом друзей, отель и ресторан не упоминаются."},{"id":3,"variant":"ВАРИАНТ 1","section":"Аудирование","num":3,"q":"Percy Arrowsmith and Florence celebrated their ... wedding anniversary.","opts":{"A":"eighty","B":"eightieth","C":"eighth","D":"eighteenth"},"ans":"B","exp":"ЛОГИКА: «80th wedding anniversary» — 80th = eightieth (порядковое числительное). | Почему не A? Eighty = 80 (количественное). | Почему не C? Eighth = 8-й."},{"id":4,"variant":"ВАРИАНТ 1","section":"Аудирование","num":4,"q":"105 is ...","opts":{"A":"Florence's age","B":"the couple's combined age","C":"Percy's age","D":"Queen Elizabeth's age"},"ans":"C","exp":"ЛОГИКА: «Percy Arrowsmith, 105» — возраст Перси. | Почему не A? Флоренс 100 лет. | Почему не B? Суммарный возраст — 205 лет."},{"id":5,"variant":"ВАРИАНТ 1","section":"Аудирование","num":5,"q":"The couple's daughter said both parents were ...","opts":{"A":"very tired","B":"as fit as fiddles","C":"very old","D":"not well"},"ans":"B","exp":"ЛОГИКА: «Jane Woolley said both parents were 'as fit as fiddles'» — идиома = в отличной форме."},{"id":6,"variant":"ВАРИАНТ 1","section":"Аудирование","num":6,"q":"What is the secret to a lasting marriage according to the couple?","opts":{"A":"never argue","B":"always apologize after every argument","C":"go to sleep early","D":"travel together"},"ans":"B","exp":"ЛОГИКА: «Always apologize after every argument» — это и есть секрет."},{"id":7,"variant":"ВАРИАНТ 1","section":"Аудирование","num":7,"q":"We still love ..., that's the most important part.","opts":{"A":"others","B":"ourselves","C":"one another","D":"any other"},"ans":"C","exp":"ЛОГИКА: «We still love one another» — друг друга."},{"id":8,"variant":"ВАРИАНТ 1","section":"Аудирование","num":8,"q":"A lasting marriage means ...","opts":{"A":"a blissful marriage","B":"the longest marriage","C":"a happy marriage","D":"a successful long marriage"},"ans":"B","exp":"ЛОГИКА: Весь текст о рекорде: «broke the world record for the longest marriage». В контексте — самый долгий брак."},{"id":9,"variant":"ВАРИАНТ 1","section":"Аудирование","num":9,"q":"In summer Oxford is full of ...","opts":{"A":"hundreds of tourists","B":"thousands of tourists","C":"many shops","D":"a lot of rivers"},"ans":"B","exp":"ЛОГИКА: Speaker 2: «Oxford has thousands of tourists in the summer»."},{"id":10,"variant":"ВАРИАНТ 1","section":"Аудирование","num":10,"q":"When does Speaker 3 help people?","opts":{"A":"when they want to eat","B":"when they are lost","C":"when they have problems with their teeth","D":"when they need to travel"},"ans":"C","exp":"Speaker 3 — дантист, помогает с зубами."},{"id":11,"variant":"ВАРИАНТ 1","section":"Аудирование","num":11,"q":"Who considers their job very difficult?","opts":{"A":"Speaker 1","B":"Speaker 2","C":"Speaker 3","D":"Speaker 4"},"ans":"D","exp":"ЛОГИКА: Speaker 4: «My job is very difficult»."},{"id":12,"variant":"ВАРИАНТ 1","section":"Аудирование","num":12,"q":"What happened to one tourist on a boat tour?","opts":{"A":"he was in pain","B":"he hated dentists","C":"he didn't like the weather","D":"he fell in the river"},"ans":"D","exp":"ЛОГИКА: Speaker 2: «last summer one tourist fell in the river»."},{"id":13,"variant":"ВАРИАНТ 1","section":"Аудирование","num":13,"q":"What does Speaker 4 fly?","opts":{"A":"helicopters","B":"rockets","C":"planes","D":"kites"},"ans":"C","exp":"Speaker 4: «I fly planes»."},{"id":14,"variant":"ВАРИАНТ 1","section":"Аудирование","num":14,"q":"Why are Saturdays busy in the shop?","opts":{"A":"they have sales","B":"they are open only on Saturdays","C":"everyone goes shopping","D":"they have special offers"},"ans":"C","exp":"Speaker 1: «Saturdays are busy because everyone goes shopping»."},{"id":15,"variant":"ВАРИАНТ 1","section":"Аудирование","num":15,"q":"According to Speaker 4, what is the most difficult thing about his job?","opts":{"A":"when the weather is bad","B":"when nobody wants to fly","C":"when people are afraid of him","D":"when tourists are lost"},"ans":"A","exp":"Speaker 4: «The most difficult thing: when the weather is bad»."},{"id":16,"variant":"ВАРИАНТ 1","section":"Аудирование","num":16,"q":"What are the worst things in the pilot's work?","opts":{"A":"water and fire","B":"water and ice","C":"smoke and fire","D":"snow and thunderstorms"},"ans":"D","exp":"Speaker 4: «Snow and thunderstorms are the worst»."},{"id":17,"variant":"ВАРИАНТ 1","section":"Лексика","num":17,"q":"He is the oldest one. He is my ... brother, his name is Marat, and then my second brother. He is Ali.","opts":{"A":"only","B":"one","C":"first","D":"two"},"ans":"C","exp":"Перечисление братьев по старшинству — «first» (первый). «Only» не подходит, т.к. братьев несколько."},{"id":18,"variant":"ВАРИАНТ 1","section":"Лексика","num":18,"q":"Do you talk to ... sometimes?","opts":{"A":"yourself","B":"myself","C":"themselves","D":"herself"},"ans":"A","exp":"Возвратное местоимение совпадает с подлежащим «you» → «yourself»."},{"id":19,"variant":"ВАРИАНТ 1","section":"Лексика","num":19,"q":"... car is very expensive.","opts":{"A":"She","B":"Hers","C":"Her","D":"She's"},"ans":"C","exp":"Перед существительным нужно притяжательное прилагательное: «Her». «Hers» — абсолютная форма, перед сущ. не ставится."},{"id":20,"variant":"ВАРИАНТ 1","section":"Лексика","num":20,"q":"Look at ... beautiful women.","opts":{"A":"them","B":"that","C":"this","D":"those"},"ans":"D","exp":"«Women» — мн.ч. Указательное мест. для мн.ч. — «those». «That»/«this» — для ед.ч."},{"id":21,"variant":"ВАРИАНТ 1","section":"Лексика","num":21,"q":"She said she would rather ... through the mountains than go by bus.","opts":{"A":"to travel by train","B":"travel by train","C":"travelling by train","D":"travelled by train"},"ans":"B","exp":"Конструкция «would rather» требует голый инфинитив (без to)."},{"id":22,"variant":"ВАРИАНТ 1","section":"Лексика","num":22,"q":"The teacher made the two girls ... the litter they had dropped.","opts":{"A":"picked up","B":"picking up","C":"to pick up","D":"pick up"},"ans":"D","exp":"«make someone do» — после make в активном залоге голый инфинитив."},{"id":23,"variant":"ВАРИАНТ 1","section":"Лексика","num":23,"q":"You need to think more ... to solve this complex problem.","opts":{"A":"analytical","B":"critical","C":"critically","D":"critic"},"ans":"C","exp":"Нужно наречие (как думать?). «critical» → «critically» (-ly). «Analytical»/«critical» — прилагательные."},{"id":24,"variant":"ВАРИАНТ 1","section":"Лексика","num":24,"q":"As a child, I used to enjoy ... so much that my parents never had to force me ... I did it eagerly.","opts":{"A":"reading; to read","B":"to read; read","C":"have read; to read","D":"to be reading; read"},"ans":"A","exp":"«enjoy» + герундий (-ing). «force» + инфинитив с to. → enjoy reading, force me to read."},{"id":25,"variant":"ВАРИАНТ 1","section":"Лексика","num":25,"q":"Be careful with that vase. It ... break easily.","opts":{"A":"mustn't","B":"have to","C":"should","D":"can"},"ans":"D","exp":"«can» — объективная возможность (может разбиться). «mustn't» — запрет, «should» — совет."},{"id":26,"variant":"ВАРИАНТ 1","section":"Лексика","num":26,"q":"Has the car been repaired yet? — Not yet. I've ... it since morning, but it's still not running.","opts":{"A":"being fixing","B":"been fixing","C":"fixing","D":"fixed"},"ans":"B","exp":"«since morning» + действие длится → Present Perfect Continuous: have been fixing."},{"id":27,"variant":"ВАРИАНТ 1","section":"Лексика","num":27,"q":"My grandparents are from ...","opts":{"A":"Philippines","B":"the Philippines","C":"a Philippines","D":"Philippine"},"ans":"B","exp":"Страны-архипелаги используются с «the»: the Philippines, the Netherlands, the Bahamas."},{"id":28,"variant":"ВАРИАНТ 1","section":"Лексика","num":28,"q":"I have ... money left. We can still get some ice cream.","opts":{"A":"a little","B":"few","C":"a few","D":"little"},"ans":"A","exp":"«money» — неисчисляемое. «few»/«a few» — для исчисляемых. «little» = мало (негатив), «a little» = немного (позитив, мороженое купить можно)."},{"id":29,"variant":"ВАРИАНТ 1","section":"Лексика","num":29,"q":"Complete the sentence. She thought about ... a cooking class this weekend.","opts":{"A":"take","B":"took","C":"taking","D":"taken"},"ans":"C","exp":"После предлога «about» — герундий (-ing). «thought about taking»."},{"id":30,"variant":"ВАРИАНТ 1","section":"Лексика","num":30,"q":"I wish I ... run fast, then I ... win the race.","opts":{"A":"could, would be able to","B":"would, could","C":"can, would can","D":"can, can"},"ans":"A","exp":"«I wish» о настоящем → Past (can → could). Следствие → «would be able to»."},{"id":31,"variant":"ВАРИАНТ 1","section":"Лексика","num":31,"q":"It is essential ... the safety measures before using the equipment.","opts":{"A":"to know","B":"to knew","C":"to knowing","D":"know"},"ans":"A","exp":"«It is + прилагательное» требует инфинитив с «to». It is essential to know."},{"id":32,"variant":"ВАРИАНТ 1","section":"Лексика","num":32,"q":"I have ... money left. We can still get some ice cream.","opts":{"A":"a little","B":"few","C":"a few","D":"little"},"ans":"A","exp":"«money» — неисчисляемое. «a little» = немного, достаточно (позитив)."},{"id":33,"variant":"ВАРИАНТ 1","section":"Лексика","num":33,"q":"I ... her today twice at the supermarket.","opts":{"A":"had met","B":"has met","C":"have met","D":"met"},"ans":"C","exp":"«today» — незаконченный период → Present Perfect. «met» (Past Simple) — если бы день уже закончился."},{"id":34,"variant":"ВАРИАНТ 1","section":"Лексика","num":34,"q":"... does it take to fly from Los Angeles to New York?","opts":{"A":"When","B":"How long","C":"How often","D":"What"},"ans":"B","exp":"«How long does it take to...» = Сколько времени требуется. «How long» — о длительности."},{"id":35,"variant":"ВАРИАНТ 2","section":"Аудирование","num":1,"q":"What date is Alice's birthday?","opts":{"A":"16th July","B":"12th July","C":"13th July","D":"14th July"},"ans":"B","exp":"Экзамен 14 июля, вечеринка в тот же день, но день рождения на 2 дня раньше. 14 − 2 = 12 июля."},{"id":36,"variant":"ВАРИАНТ 2","section":"Аудирование","num":2,"q":"What place to eat did Jack suggest?","opts":{"A":"A new burger restaurant","B":"Freddie's Pizza House","C":"Penny Road restaurant","D":"Tom's house"},"ans":"A","exp":"Джек: «Why don't you try the new burger restaurant?»"},{"id":37,"variant":"ВАРИАНТ 2","section":"Аудирование","num":3,"q":"Who is having a birthday soon?","opts":{"A":"Alice","B":"Penny","C":"Arthur","D":"Jack"},"ans":"A","exp":"«Isn't it your birthday soon, Alice? — Yes.»"},{"id":38,"variant":"ВАРИАНТ 2","section":"Аудирование","num":4,"q":"What is \"Arthur's\"?","opts":{"A":"It is a book shop.","B":"A new pizza place.","C":"A new burger restaurant.","D":"A restaurant on Hill Street."},"ans":"A","exp":"Ресторан находится «opposite a little bookshop called Arthur's» — напротив книжного магазина."},{"id":39,"variant":"ВАРИАНТ 2","section":"Аудирование","num":5,"q":"What did Alice's flat mate eat in Friday's Pizza House?","opts":{"A":"Pizza","B":"Pasta","C":"Burgers","D":"Sushi"},"ans":"A","exp":"Pizza House → пицца. «the pizzas were terrible»."},{"id":40,"variant":"ВАРИАНТ 2","section":"Аудирование","num":6,"q":"What did Alice's flat mate say about the waiters in Friday's Pizza House?","opts":{"A":"They are unfriendly","B":"They are friendly","C":"They are clumsy","D":"They are terrible"},"ans":"B","exp":"«the waiters were very friendly»."},{"id":41,"variant":"ВАРИАНТ 2","section":"Аудирование","num":9,"q":"Maria has worked as an architect for ... years.","opts":{"A":"15","B":"18","C":"20","D":"25"},"ans":"C","exp":"В тексте прямо указан стаж Марии."},{"id":42,"variant":"ВАРИАНТ 3","section":"Аудирование","num":1,"q":"Clementine Hozier, granddaughter of the ... Earl of Airlie?","opts":{"A":"fourth","B":"fifth","C":"sixth","D":"seventh"},"ans":"B","exp":"В тексте о Черчилле прямо указан титул."},{"id":43,"variant":"ВАРИАНТ 3","section":"Аудирование","num":2,"q":"When did Churchill graduate from Sandhurst?","opts":{"A":"1892","B":"1893","C":"1894","D":"1895"},"ans":"C","exp":"В тексте прямо указан год окончания Сандхёрста."},{"id":44,"variant":"ВАРИАНТ 3","section":"Аудирование","num":9,"q":"When will the tour start?","opts":{"A":"at 9 am","B":"at 9:30 am","C":"at 10 am","D":"at 10:30 am"},"ans":"C","exp":"В тексте Cambridge Language School указано время начала тура."},{"id":45,"variant":"ВАРИАНТ 3","section":"Аудирование","num":10,"q":"What language school does David Hudson manage?","opts":{"A":"Oxford Language School","B":"Cambridge Language School","C":"London Language School","D":"Bristol Language School"},"ans":"B","exp":"«David Hudson manages Cambridge Language School»."},{"id":46,"variant":"ВАРИАНТ 4","section":"Аудирование","num":1,"q":"Martin set his alarm clock for ...","opts":{"A":"5 am","B":"6 am","C":"7 am","D":"8 am"},"ans":"B","exp":"В тексте прямо указано время будильника Мартина."},{"id":47,"variant":"ВАРИАНТ 4","section":"Аудирование","num":2,"q":"What did Martin forget to take with him?","opts":{"A":"his phone","B":"his keys","C":"his passport","D":"his tickets"},"ans":"C","exp":"Martin forgot his passport — вернулся за ним домой."},{"id":48,"variant":"ВАРИАНТ 4","section":"Аудирование","num":3,"q":"Why did Martin go back inside the house?","opts":{"A":"to get his phone","B":"to get his passport","C":"to turn off the oven","D":"to say goodbye to his family"},"ans":"B","exp":"«He went back to get his passport»."},{"id":49,"variant":"ВАРИАНТ 4","section":"Аудирование","num":4,"q":"Who did Martin call when he had a problem?","opts":{"A":"his wife","B":"the airline","C":"the taxi company","D":"his friend"},"ans":"A","exp":"«Martin called his wife» когда возникли проблемы."},{"id":50,"variant":"ВАРИАНТ 4","section":"Аудирование","num":5,"q":"Martin discovered ... when he went back outside.","opts":{"A":"that the taxi had gone","B":"that he didn't have his phone","C":"that the taxi had arrived","D":"that he didn't have his passport"},"ans":"A","exp":"«But the taxi wasn't there» — такси уехало."},{"id":51,"variant":"ВАРИАНТ 4","section":"Аудирование","num":6,"q":"Martin got to the airport the second time by ...","opts":{"A":"bus","B":"train","C":"car","D":"taxi"},"ans":"D","exp":"«Martin found another taxi and told the driver to take him to the airport»."},{"id":52,"variant":"ВАРИАНТ 4","section":"Аудирование","num":7,"q":"He arrived late at the airport because ...","opts":{"A":"there was a lot of traffic","B":"he went another way","C":"he was in a hurry","D":"he was tired"},"ans":"A","exp":"«The traffic on the roads was very bad ... arrived late»."},{"id":53,"variant":"ВАРИАНТ 5","section":"Аудирование","num":1,"q":"Where does the interview take place?","opts":{"A":"at a hospital","B":"at a school","C":"at an office","D":"at a restaurant"},"ans":"C","exp":"Job Interview — собеседование проходит в офисе."},{"id":54,"variant":"ВАРИАНТ 5","section":"Аудирование","num":9,"q":"The running man runs ... miles every day.","opts":{"A":"5","B":"10","C":"15","D":"20"},"ans":"B","exp":"В тексте Running Man указывается дистанция."},{"id":55,"variant":"ВАРИАНТ 6","section":"Аудирование","num":1,"q":"What type of essay does the teacher explain?","opts":{"A":"descriptive","B":"argumentative","C":"narrative","D":"persuasive"},"ans":"B","exp":"Essay Instructions — объясняются инструкции к argumentative essay."},{"id":56,"variant":"ВАРИАНТ 6","section":"Аудирование","num":9,"q":"What is special about the first hotel mentioned?","opts":{"A":"It has a swimming pool","B":"It is the cheapest","C":"It has the best location","D":"It is the oldest"},"ans":"C","exp":"Отель выделяется лучшим расположением."},{"id":57,"variant":"ВАРИАНТ 7","section":"Аудирование","num":1,"q":"What percentage of people in Denmark use bicycles to commute?","opts":{"A":"25%","B":"50%","C":"62%","D":"75%"},"ans":"C","exp":"В тексте про Данию прямо указан процент велосипедистов."},{"id":58,"variant":"ВАРИАНТ 7","section":"Аудирование","num":9,"q":"What is the main advantage of a hotel mentioned?","opts":{"A":"free breakfast","B":"swimming pool","C":"good service","D":"low price"},"ans":"A","exp":"Главное преимущество отеля — бесплатный завтрак."},{"id":59,"variant":"ВАРИАНТ 8","section":"Аудирование","num":1,"q":"What film does Tom invite Sarah to see?","opts":{"A":"a comedy","B":"an action film","C":"a horror film","D":"a romance"},"ans":"A","exp":"Cinema Invitation — Tom приглашает на комедию."},{"id":60,"variant":"ВАРИАНТ 8","section":"Аудирование","num":9,"q":"How long has Paul been a policeman?","opts":{"A":"5 years","B":"10 years","C":"15 years","D":"20 years"},"ans":"B","exp":"«Paul has been a policeman for 10 years»."},{"id":61,"variant":"ВАРИАНТ 9","section":"Аудирование","num":1,"q":"What does Lucy want to buy as a birthday present?","opts":{"A":"a book","B":"a game","C":"a toy","D":"clothes"},"ans":"B","exp":"В тексте Birthday Present Люси хочет купить игру."},{"id":62,"variant":"ВАРИАНТ 9","section":"Аудирование","num":9,"q":"When does Chinese New Year usually start?","opts":{"A":"January 1","B":"between January 21 and February 20","C":"February 14","D":"March 1"},"ans":"B","exp":"Китайский Новый год — между 21 января и 20 февраля."},{"id":63,"variant":"ВАРИАНТ 10","section":"Аудирование","num":1,"q":"What time does Lucas wake up?","opts":{"A":"6:00","B":"6:30","C":"7:00","D":"7:30"},"ans":"C","exp":"В тексте Lucas's School Day прямо указано время пробуждения."},{"id":64,"variant":"ВАРИАНТ 10","section":"Аудирование","num":9,"q":"What does the Vita-On website sell?","opts":{"A":"clothes","B":"food supplements","C":"electronics","D":"books"},"ans":"B","exp":"Vita-On — сайт продаёт пищевые добавки (food supplements)."},{"id":65,"variant":"ВАРИАНТ 2","section":"Лексика","num":17,"q":"The students are looking forward to ... on holiday.","opts":{"A":"go","B":"going","C":"gone","D":"to go"},"ans":"B","exp":"«look forward to» + герундий (-ing). «look forward to going»."},{"id":66,"variant":"ВАРИАНТ 2","section":"Лексика","num":18,"q":"She is very good ... cooking.","opts":{"A":"in","B":"on","C":"at","D":"for"},"ans":"C","exp":"«good at» — устойчивое словосочетание: быть хорошим в чём-либо."},{"id":67,"variant":"ВАРИАНТ 2","section":"Лексика","num":19,"q":"I'd rather you ... here tomorrow.","opts":{"A":"come","B":"came","C":"will come","D":"have come"},"ans":"B","exp":"«would rather someone did» — сослагательное наклонение, Past Simple."},{"id":68,"variant":"ВАРИАНТ 2","section":"Лексика","num":20,"q":"By the time we arrived, the film ...","opts":{"A":"starts","B":"started","C":"had started","D":"has started"},"ans":"C","exp":"«By the time» + Past Simple → главное предложение в Past Perfect (had started)."},{"id":69,"variant":"ВАРИАНТ 2","section":"Лексика","num":21,"q":"This is the most interesting book I ...","opts":{"A":"ever read","B":"have ever read","C":"had ever read","D":"ever have read"},"ans":"B","exp":"Превосходная степень + Present Perfect: «the most... I have ever read»."},{"id":70,"variant":"ВАРИАНТ 2","section":"Лексика","num":22,"q":"Neither of the students ... the exam.","opts":{"A":"have passed","B":"has passed","C":"are passing","D":"pass"},"ans":"B","exp":"«Neither of» + ед.ч. глагола: «has passed»."},{"id":71,"variant":"ВАРИАНТ 2","section":"Лексика","num":23,"q":"The letter ... yesterday.","opts":{"A":"sent","B":"was sent","C":"has been sent","D":"is sent"},"ans":"B","exp":"Действие в прошлом в пассивном залоге → was sent (Past Simple Passive)."},{"id":72,"variant":"ВАРИАНТ 2","section":"Лексика","num":24,"q":"He suggested ... to the cinema.","opts":{"A":"to go","B":"going","C":"go","D":"gone"},"ans":"B","exp":"«suggest» + герундий (-ing). «suggested going»."},{"id":73,"variant":"ВАРИАНТ 2","section":"Лексика","num":25,"q":"... the weather was bad, they decided to go for a walk.","opts":{"A":"Despite","B":"Although","C":"However","D":"In spite"},"ans":"B","exp":"«Although» + придаточное предложение (с подлежащим и сказуемым). «Despite»/«In spite of» + существительное/герундий."},{"id":74,"variant":"ВАРИАНТ 2","section":"Лексика","num":26,"q":"If I ... you, I would study harder.","opts":{"A":"am","B":"was","C":"were","D":"be"},"ans":"C","exp":"«If I were you» — устойчивая форма 2-го условного наклонения (сослагательное were)."},{"id":75,"variant":"ВАРИАНТ 2","section":"Лексика","num":27,"q":"She has been waiting ... two hours.","opts":{"A":"since","B":"for","C":"during","D":"while"},"ans":"B","exp":"«for» + период времени (two hours). «since» + момент времени (since 2 o'clock)."},{"id":76,"variant":"ВАРИАНТ 2","section":"Лексика","num":28,"q":"The children ... play in the garden when it's raining.","opts":{"A":"mustn't","B":"don't have to","C":"shouldn't","D":"needn't"},"ans":"C","exp":"«shouldn't» — совет/рекомендация не делать. «mustn't» — строгий запрет."},{"id":77,"variant":"ВАРИАНТ 2","section":"Лексика","num":29,"q":"I'm used to ... early in the morning.","opts":{"A":"get up","B":"getting up","C":"got up","D":"have got up"},"ans":"B","exp":"«be used to» + герундий (-ing). «used to» + инфинитив (прошлая привычка)."},{"id":78,"variant":"ВАРИАНТ 2","section":"Лексика","num":30,"q":"The more you practice, ... you become.","opts":{"A":"the better","B":"the best","C":"better","D":"best"},"ans":"A","exp":"«The more... the better» — сравнительная конструкция удвоенного сравнения."},{"id":79,"variant":"ВАРИАНТ 2","section":"Лексика","num":31,"q":"He asked me ... with him to the party.","opts":{"A":"to go","B":"go","C":"going","D":"gone"},"ans":"A","exp":"«ask someone to do» — инфинитив с to. «asked me to go»."},{"id":80,"variant":"ВАРИАНТ 2","section":"Лексика","num":32,"q":"She can speak ... languages fluently.","opts":{"A":"much","B":"little","C":"few","D":"several"},"ans":"D","exp":"«several» = несколько (для исчисляемых). «much»/«little» — для неисчисляемых."},{"id":81,"variant":"ВАРИАНТ 3","section":"Лексика","num":17,"q":"I don't mind ... for you, but please hurry.","opts":{"A":"to wait","B":"waiting","C":"wait","D":"waited"},"ans":"B","exp":"«mind» + герундий: «don't mind waiting»."},{"id":82,"variant":"ВАРИАНТ 3","section":"Лексика","num":18,"q":"He was made ... stay late at work.","opts":{"A":"to","B":"to stay","C":"staying","D":"stay"},"ans":"B","exp":"«make» в пассивном залоге требует инфинитив с to: «was made to stay»."},{"id":83,"variant":"ВАРИАНТ 3","section":"Лексика","num":19,"q":"... I were a millionaire, I would travel the world.","opts":{"A":"If","B":"Unless","C":"When","D":"Though"},"ans":"A","exp":"Второе условное: «If I were... I would...». Нереальное условие в настоящем."},{"id":84,"variant":"ВАРИАНТ 3","section":"Лексика","num":20,"q":"This dress is too expensive. I can't afford it. I wish I ... more money.","opts":{"A":"have","B":"had","C":"will have","D":"would have"},"ans":"B","exp":"«I wish» + Past Simple для нереального желания о настоящем."},{"id":85,"variant":"ВАРИАНТ 3","section":"Лексика","num":21,"q":"She ... here for three years when she decided to move.","opts":{"A":"lived","B":"has lived","C":"had lived","D":"was living"},"ans":"C","exp":"Действие длилось до момента в прошлом → Past Perfect: «had lived»."},{"id":86,"variant":"ВАРИАНТ 3","section":"Лексика","num":22,"q":"You ... take an umbrella — it might rain.","opts":{"A":"must","B":"should","C":"would","D":"can"},"ans":"B","exp":"«should» — совет/рекомендация. «must» — обязательность."},{"id":87,"variant":"ВАРИАНТ 3","section":"Лексика","num":23,"q":"He's a man ... I really admire.","opts":{"A":"who","B":"which","C":"what","D":"whose"},"ans":"A","exp":"Относительное местоимение для людей — «who»."},{"id":88,"variant":"ВАРИАНТ 3","section":"Лексика","num":24,"q":"The book was so boring that I ... finish it.","opts":{"A":"could","B":"couldn't","C":"wouldn't","D":"shouldn't"},"ans":"B","exp":"Контекст: книга скучная → не смог дочитать. «couldn't» = не мог (отсутствие способности)."},{"id":89,"variant":"ВАРИАНТ 3","section":"Лексика","num":25,"q":"She ... to school every day when she was young.","opts":{"A":"walks","B":"is walking","C":"walked","D":"has walked"},"ans":"C","exp":"«when she was young» — прошедшее время. Регулярное действие → Past Simple."},{"id":90,"variant":"ВАРИАНТ 3","section":"Лексика","num":26,"q":"They haven't finished the project ...","opts":{"A":"already","B":"still","C":"yet","D":"just"},"ans":"C","exp":"«yet» — с отрицательными и вопросительными предложениями. «already» — с утвердительными."},{"id":91,"variant":"ВАРИАНТ 3","section":"Лексика","num":27,"q":"The news ... very surprising.","opts":{"A":"were","B":"are","C":"is","D":"have been"},"ans":"C","exp":"«News» — неисчисляемое существительное, всегда с ед.ч. глагола: «is»."},{"id":92,"variant":"ВАРИАНТ 3","section":"Лексика","num":28,"q":"... she arrived, we were having dinner.","opts":{"A":"While","B":"During","C":"When","D":"As soon as"},"ans":"C","exp":"«When» + Past Simple прерывает действие в Past Continuous. «While» + длящееся действие."},{"id":93,"variant":"ВАРИАНТ 3","section":"Лексика","num":29,"q":"It's important that everyone ... the meeting.","opts":{"A":"attends","B":"attend","C":"will attend","D":"attended"},"ans":"B","exp":"После «it's important that» используется сослагательное наклонение (subjunctive) — голый инфинитив."},{"id":94,"variant":"ВАРИАНТ 3","section":"Лексика","num":30,"q":"She told me she ... the next day.","opts":{"A":"will come","B":"comes","C":"would come","D":"came"},"ans":"C","exp":"Косвенная речь: will → would, «the next day» вместо «tomorrow»."},{"id":95,"variant":"ВАРИАНТ 4","section":"Лексика","num":17,"q":"I'm not used to ... so early.","opts":{"A":"wake up","B":"woke up","C":"waking up","D":"having woken"},"ans":"C","exp":"«be used to» + герундий (-ing): «not used to waking up»."},{"id":96,"variant":"ВАРИАНТ 4","section":"Лексика","num":18,"q":"The meeting ... by the director.","opts":{"A":"cancelled","B":"was cancelled","C":"has cancel","D":"cancels"},"ans":"B","exp":"Пассивный залог + прошедшее время → was cancelled."},{"id":97,"variant":"ВАРИАНТ 4","section":"Лексика","num":19,"q":"He is the person ... helped me most.","opts":{"A":"which","B":"whose","C":"who","D":"what"},"ans":"C","exp":"«who» — относительное местоимение для людей (подлежащее)."},{"id":98,"variant":"ВАРИАНТ 4","section":"Лексика","num":20,"q":"She asked if I ... seen her keys.","opts":{"A":"have","B":"had","C":"has","D":"did"},"ans":"B","exp":"Косвенный вопрос: Present Perfect → Past Perfect (had seen)."},{"id":99,"variant":"ВАРИАНТ 4","section":"Лексика","num":21,"q":"We arrived late ... the traffic was terrible.","opts":{"A":"although","B":"because","C":"however","D":"in spite of"},"ans":"B","exp":"«because» + причина. «although» — несмотря на (противопоставление)."},{"id":100,"variant":"ВАРИАНТ 4","section":"Лексика","num":22,"q":"They ... the company for 10 years.","opts":{"A":"run","B":"runs","C":"have run","D":"are running"},"ans":"C","exp":"«for 10 years» с Present Perfect: «have run» — управляют уже 10 лет (и сейчас)."},{"id":101,"variant":"ВАРИАНТ 5","section":"Лексика","num":17,"q":"She's been working here ... 2015.","opts":{"A":"for","B":"since","C":"during","D":"from"},"ans":"B","exp":"«since» + конкретный момент времени (2015). «for» + период (for 5 years)."},{"id":102,"variant":"ВАРИАНТ 5","section":"Лексика","num":18,"q":"The students ... the exam when the fire alarm rang.","opts":{"A":"were taking","B":"took","C":"had taken","D":"take"},"ans":"A","exp":"Длящееся действие в прошлом (прерванное) → Past Continuous: «were taking»."},{"id":103,"variant":"ВАРИАНТ 5","section":"Лексика","num":19,"q":"Neither John nor Mary ... at home.","opts":{"A":"are","B":"is","C":"were","D":"have been"},"ans":"B","exp":"«Neither... nor» + ближнее подлежащее определяет форму глагола. Mary (ед.ч.) → is."},{"id":104,"variant":"ВАРИАНТ 5","section":"Лексика","num":20,"q":"He denied ... the money.","opts":{"A":"to steal","B":"stealing","C":"steal","D":"stolen"},"ans":"B","exp":"«deny» + герундий: «denied stealing»."},{"id":105,"variant":"ВАРИАНТ 5","section":"Лексика","num":21,"q":"If you had told me earlier, I ... have helped you.","opts":{"A":"will","B":"would","C":"can","D":"could"},"ans":"B","exp":"3-е условное (нереальное прошлое): If + Past Perfect → would have + V3."},{"id":106,"variant":"ВАРИАНТ 5","section":"Лексика","num":22,"q":"She looks ... a famous actress.","opts":{"A":"as","B":"like","C":"as if","D":"similar"},"ans":"B","exp":"«look like» + существительное = выглядеть как. «as if» + предложение."},{"id":107,"variant":"ВАРИАНТ 5","section":"Лексика","num":23,"q":"It's high time you ... a decision.","opts":{"A":"make","B":"made","C":"will make","D":"have made"},"ans":"B","exp":"«It's high time» + Past Simple (сослагательное). «It's time you made a decision»."},{"id":108,"variant":"ВАРИАНТ 5","section":"Лексика","num":24,"q":"The book, ... was written in 1990, is still popular.","opts":{"A":"that","B":"which","C":"who","D":"what"},"ans":"B","exp":"Неограничительное придаточное (запятые) → «which» (не «that»)."},{"id":109,"variant":"ВАРИАНТ 5","section":"Лексика","num":25,"q":"We had our house ... last summer.","opts":{"A":"to paint","B":"painting","C":"painted","D":"paint"},"ans":"C","exp":"«have something done» = каузатив (кто-то делает за нас). «had the house painted»."},{"id":110,"variant":"ВАРИАНТ 6","section":"Лексика","num":17,"q":"He's too young ... drive a car.","opts":{"A":"for","B":"to","C":"at","D":"in"},"ans":"B","exp":"«too + прилагательное + to + инфинитив»: too young to drive."},{"id":111,"variant":"ВАРИАНТ 6","section":"Лексика","num":18,"q":"She ... for the company since 1995.","opts":{"A":"works","B":"worked","C":"has worked","D":"is working"},"ans":"C","exp":"«since 1995» → Present Perfect: «has worked»."},{"id":112,"variant":"ВАРИАНТ 6","section":"Лексика","num":19,"q":"Rarely ... such a beautiful sunset.","opts":{"A":"I have seen","B":"have I seen","C":"I saw","D":"did I see"},"ans":"B","exp":"Инверсия после отрицательных наречий (Rarely, Never, Seldom): «Rarely have I seen»."},{"id":113,"variant":"ВАРИАНТ 6","section":"Лексика","num":20,"q":"The building ... in 1900.","opts":{"A":"built","B":"was built","C":"builds","D":"is building"},"ans":"B","exp":"Пассивный залог + прошедшее время: «was built»."},{"id":114,"variant":"ВАРИАНТ 6","section":"Лексика","num":21,"q":"I'd rather ... alone.","opts":{"A":"to be","B":"being","C":"be","D":"been"},"ans":"C","exp":"«would rather» + голый инфинитив (без to)."},{"id":115,"variant":"ВАРИАНТ 6","section":"Лексика","num":22,"q":"Despite ... hard, she failed the exam.","opts":{"A":"studying","B":"to study","C":"study","D":"studied"},"ans":"A","exp":"«Despite» + герундий/существительное: «Despite studying hard»."},{"id":116,"variant":"ВАРИАНТ 6","section":"Лексика","num":23,"q":"You ... be tired after such a long journey.","opts":{"A":"can","B":"must","C":"should","D":"could"},"ans":"B","exp":"«must» — логическое умозаключение/уверенность. «You must be tired» = несомненно устал."},{"id":117,"variant":"ВАРИАНТ 6","section":"Лексика","num":24,"q":"By 2030, scientists ... a cure for this disease.","opts":{"A":"will find","B":"find","C":"will have found","D":"found"},"ans":"C","exp":"«By + будущее время» → Future Perfect: will have found (завершится к 2030)."},{"id":118,"variant":"ВАРИАНТ 7","section":"Лексика","num":17,"q":"He ... to the gym three times this week.","opts":{"A":"went","B":"goes","C":"has gone","D":"had gone"},"ans":"C","exp":"«this week» (незаконченный период) → Present Perfect: «has gone»."},{"id":119,"variant":"ВАРИАНТ 7","section":"Лексика","num":18,"q":"I wish I ... harder at school.","opts":{"A":"studied","B":"had studied","C":"would study","D":"study"},"ans":"B","exp":"«I wish» + Past Perfect для сожаления о прошлом."},{"id":120,"variant":"ВАРИАНТ 7","section":"Лексика","num":19,"q":"The police ... investigating the crime.","opts":{"A":"is","B":"are","C":"was","D":"has been"},"ans":"B","exp":"«The police» — всегда мн.ч. в британском английском: «are»."},{"id":121,"variant":"ВАРИАНТ 7","section":"Лексика","num":20,"q":"She is capable ... solving complex problems.","opts":{"A":"to","B":"of","C":"in","D":"at"},"ans":"B","exp":"«capable of» + герундий: «capable of solving»."},{"id":122,"variant":"ВАРИАНТ 7","section":"Лексика","num":21,"q":"Not only ... late, but he also forgot his homework.","opts":{"A":"he was","B":"was he","C":"he is","D":"is he"},"ans":"B","exp":"Инверсия после «Not only»: «Not only was he late»."},{"id":123,"variant":"ВАРИАНТ 7","section":"Лексика","num":22,"q":"She ... speak three languages by the time she was 12.","opts":{"A":"can","B":"could","C":"may","D":"might"},"ans":"B","exp":"«could» — прошедшая способность. «can» — настоящее время."},{"id":124,"variant":"ВАРИАНТ 8","section":"Лексика","num":17,"q":"It was the worst film I ... seen.","opts":{"A":"ever","B":"have ever","C":"had ever","D":"ever have"},"ans":"C","exp":"Прошедшее время + превосходная степень → Past Perfect: «had ever seen»."},{"id":125,"variant":"ВАРИАНТ 8","section":"Лексика","num":18,"q":"She ... at the office when I called.","opts":{"A":"worked","B":"was working","C":"has worked","D":"works"},"ans":"B","exp":"Действие длилось в момент звонка → Past Continuous: «was working»."},{"id":126,"variant":"ВАРИАНТ 8","section":"Лексика","num":19,"q":"He's the man ... car was stolen.","opts":{"A":"who","B":"which","C":"whose","D":"that"},"ans":"C","exp":"«whose» — притяжательное относительное местоимение (чья машина)."},{"id":127,"variant":"ВАРИАНТ 8","section":"Лексика","num":20,"q":"They ... here since this morning.","opts":{"A":"are","B":"were","C":"have been","D":"had been"},"ans":"C","exp":"«since this morning» → Present Perfect: «have been»."},{"id":128,"variant":"ВАРИАНТ 9","section":"Лексика","num":17,"q":"He admitted ... the window.","opts":{"A":"to break","B":"breaking","C":"broken","D":"break"},"ans":"B","exp":"«admit» + герундий: «admitted breaking»."},{"id":129,"variant":"ВАРИАНТ 9","section":"Лексика","num":18,"q":"She had her hair ... yesterday.","opts":{"A":"cut","B":"cutting","C":"to cut","D":"cuts"},"ans":"A","exp":"«have something done» (каузатив): «had her hair cut»."},{"id":130,"variant":"ВАРИАНТ 9","section":"Лексика","num":19,"q":"We've been waiting ... an hour.","opts":{"A":"since","B":"for","C":"during","D":"from"},"ans":"B","exp":"«for» + период времени: «for an hour»."},{"id":131,"variant":"ВАРИАНТ 9","section":"Лексика","num":20,"q":"... you been to Paris?","opts":{"A":"Did","B":"Have","C":"Are","D":"Do"},"ans":"B","exp":"Present Perfect вопрос: «Have you been to Paris?»"},{"id":132,"variant":"ВАРИАНТ 10","section":"Лексика","num":17,"q":"The results ... tomorrow.","opts":{"A":"announce","B":"will announce","C":"will be announced","D":"are announcing"},"ans":"C","exp":"Пассивный залог в будущем: «will be announced»."},{"id":133,"variant":"ВАРИАНТ 10","section":"Лексика","num":18,"q":"He made me ... for two hours.","opts":{"A":"to wait","B":"waiting","C":"wait","D":"waited"},"ans":"C","exp":"«make someone do» (активный залог) → голый инфинитив: «made me wait»."},{"id":134,"variant":"ВАРИАНТ 10","section":"Лексика","num":19,"q":"I haven't seen her ...","opts":{"A":"already","B":"yet","C":"still","D":"just"},"ans":"B","exp":"«yet» — в отрицательных предложениях (ещё не). «already» — в утвердительных."},{"id":135,"variant":"ВАРИАНТ 10","section":"Лексика","num":20,"q":"She's not ... clever as her sister.","opts":{"A":"so","B":"as","C":"too","D":"very"},"ans":"A","exp":"«not as... as» или «not so... as». Оба варианта возможны для отрицательного сравнения."},{"id":136,"variant":"ВАРИАНТ 1","section":"Чтение","num":1,"q":"The British Isles consist of ...","opts":{"A":"one island","B":"two main islands","C":"three islands","D":"four islands"},"ans":"B","exp":"Британские острова состоят из двух главных островов: Великобритания и Ирландия."},{"id":137,"variant":"ВАРИАНТ 1","section":"Чтение","num":2,"q":"The longest river in the UK is ...","opts":{"A":"the Thames","B":"the Severn","C":"the Trent","D":"the Mersey"},"ans":"B","exp":"Самая длинная река в Великобритании — Северн (Severn), не Темза."},{"id":138,"variant":"ВАРИАНТ 1","section":"Чтение","num":9,"q":"The London Underground opened in ...","opts":{"A":"1863","B":"1900","C":"1920","D":"1945"},"ans":"A","exp":"Лондонское метро открылось в 1863 году — первое в мире."},{"id":139,"variant":"ВАРИАНТ 2","section":"Чтение","num":1,"q":"The teacher's name in the text is ...","opts":{"A":"Mr Brown","B":"Ms Johnson","C":"Mr Smith","D":"Ms Davis"},"ans":"C","exp":"В тексте My First English Class имя учителя — Mr Smith."},{"id":140,"variant":"ВАРИАНТ 2","section":"Чтение","num":9,"q":"Thanksgiving is celebrated in the USA on ...","opts":{"A":"the first Thursday of November","B":"the last Thursday of November","C":"the fourth Thursday of November","D":"the third Thursday of November"},"ans":"C","exp":"День благодарения в США — четвёртый четверг ноября."},{"id":141,"variant":"ВАРИАНТ 3","section":"Чтение","num":1,"q":"Filmworld Cinemas offers a discount to ...","opts":{"A":"students only","B":"senior citizens only","C":"students and senior citizens","D":"everyone on Mondays"},"ans":"C","exp":"Скидки предоставляются студентам и пожилым гражданам."},{"id":142,"variant":"ВАРИАНТ 3","section":"Чтение","num":9,"q":"The woman who can remember every day of her life ...","opts":{"A":"enjoys her ability","B":"finds it difficult","C":"uses it for her work","D":"has written a book"},"ans":"B","exp":"Женщина с гипертимезией считает способность помнить каждый день сложной."},{"id":143,"variant":"ВАРИАНТ 4","section":"Чтение","num":1,"q":"Maps were first made ...","opts":{"A":"by the Romans","B":"by the Greeks","C":"by the Egyptians","D":"by the Chinese"},"ans":"B","exp":"Первые карты были созданы греками."},{"id":144,"variant":"ВАРИАНТ 4","section":"Чтение","num":9,"q":"Seahorses are unusual fish because ...","opts":{"A":"they can fly","B":"males give birth","C":"they live on land","D":"they have no fins"},"ans":"B","exp":"Морские коньки уникальны тем, что самцы вынашивают и рожают детёнышей."},{"id":145,"variant":"ВАРИАНТ 5","section":"Чтение","num":1,"q":"On September 11, 2001, the attacks happened in ...","opts":{"A":"Washington and New York","B":"New York and Pennsylvania","C":"New York, Washington and Pennsylvania","D":"Washington and Pennsylvania"},"ans":"C","exp":"Атаки 11 сентября произошли в трёх местах: Нью-Йорк, Вашингтон и Пенсильвания."},{"id":146,"variant":"ВАРИАНТ 5","section":"Чтение","num":9,"q":"The narrator's new apartment is described as ...","opts":{"A":"too small but cheap","B":"perfect and affordable","C":"large but expensive","D":"noisy but comfortable"},"ans":"A","exp":"Квартира описывается как маленькая, но дешёвая."},{"id":147,"variant":"ВАРИАНТ 6","section":"Чтение","num":1,"q":"To work in the cinema industry you need ...","opts":{"A":"a degree in film studies","B":"experience only","C":"creativity and technical skills","D":"knowledge of marketing"},"ans":"C","exp":"Для работы в киноиндустрии нужны творческие и технические навыки."},{"id":148,"variant":"ВАРИАНТ 6","section":"Чтение","num":9,"q":"The MIT research showed that ...","opts":{"A":"people learn better alone","B":"teamwork improves results","C":"technology reduces creativity","D":"sleep improves memory"},"ans":"B","exp":"Исследование MIT показало, что командная работа улучшает результаты."},{"id":149,"variant":"ВАРИАНТ 7","section":"Чтение","num":1,"q":"Valentine's Day is celebrated on ...","opts":{"A":"February 12","B":"February 13","C":"February 14","D":"February 15"},"ans":"C","exp":"День святого Валентина — 14 февраля."},{"id":150,"variant":"ВАРИАНТ 7","section":"Чтение","num":9,"q":"Chicago is located on the shores of ...","opts":{"A":"Lake Superior","B":"Lake Michigan","C":"Lake Erie","D":"Lake Huron"},"ans":"B","exp":"Чикаго расположен на берегах озера Мичиган."},{"id":151,"variant":"ВАРИАНТ 8","section":"Чтение","num":1,"q":"According to the text, the healthiest food is ...","opts":{"A":"meat","B":"fish","C":"vegetables and fruit","D":"dairy products"},"ans":"C","exp":"Согласно тексту, самая полезная еда — овощи и фрукты."},{"id":152,"variant":"ВАРИАНТ 8","section":"Чтение","num":9,"q":"The Statue of Liberty was a gift from ...","opts":{"A":"Britain","B":"Canada","C":"France","D":"Spain"},"ans":"C","exp":"Статуя Свободы — подарок от Франции."},{"id":153,"variant":"ВАРИАНТ 9","section":"Чтение","num":1,"q":"Earth Hour takes place every year in ...","opts":{"A":"January","B":"February","C":"March","D":"April"},"ans":"C","exp":"Час Земли проводится каждый год в марте."},{"id":154,"variant":"ВАРИАНТ 9","section":"Чтение","num":9,"q":"Canada is the ... largest country in the world.","opts":{"A":"largest","B":"second","C":"third","D":"fourth"},"ans":"B","exp":"Канада — вторая по величине страна в мире."},{"id":155,"variant":"ВАРИАНТ 10","section":"Чтение","num":35,"q":"Where was John Lennon born?","opts":{"A":"New York","B":"Hamburg","C":"Liverpool","D":"London"},"ans":"C","exp":"«John Winston Lennon was born in Liverpool in 1940.»"},{"id":156,"variant":"ВАРИАНТ 10","section":"Чтение","num":36,"q":"Where did John live in his last years?","opts":{"A":"England","B":"Germany","C":"United States of America","D":"Japan"},"ans":"C","exp":"«John went to live in America in the 1970s»."},{"id":157,"variant":"ВАРИАНТ 10","section":"Чтение","num":37,"q":"John wrote \"...\" in 1971, a song that everyone knows today.","opts":{"A":"Stand By Me","B":"Double Fantasy","C":"Beatles","D":"Imagine"},"ans":"D","exp":"«John wrote 'Imagine' in 1971, a song that everyone knows today.»"},{"id":158,"variant":"ВАРИАНТ 10","section":"Чтение","num":38,"q":"When did the band last play together on stage?","opts":{"A":"In nineteen seventy","B":"In nineteen sixty-six","C":"In nineteen eighty","D":"In nineteen sixty-two"},"ans":"B","exp":"«they played their last official concert at the end of 1966». 1966 = nineteen sixty-six."},{"id":159,"variant":"ВАРИАНТ 10","section":"Чтение","num":39,"q":"The name of the band was the ...","opts":{"A":"Beatles","B":"Star","C":"Best","D":"Stones"},"ans":"A","exp":"«The name of the band was the Beatles.»"},{"id":160,"variant":"ВАРИАНТ 10","section":"Чтение","num":40,"q":"Who is the first former band member?","opts":{"A":"Paul McCartney","B":"Ringo Starr","C":"Pete Best","D":"John Lennon"},"ans":"C","exp":"«after Pete Best, the first drummer, left». Пит Бест — первый барабанщик, покинувший группу."},{"id":161,"variant":"ВАРИАНТ 10","section":"Чтение","num":41,"q":"John wrote 'Imagine' in ...","opts":{"A":"1970","B":"1971","C":"1975","D":"1980"},"ans":"B","exp":"«John wrote 'Imagine' in 1971»."},{"id":162,"variant":"ВАРИАНТ 10","section":"Чтение","num":42,"q":"What is the full name of John?","opts":{"A":"Jonathan Lennon","B":"Johnny Lennon","C":"John Winston Lennon","D":"John Winston Lennon Jr."},"ans":"C","exp":"«John Winston Lennon was born in Liverpool in 1940.»"},{"id":163,"variant":"ВАРИАНТ 10","section":"Чтение","num":43,"q":"There are ... grey whales that swim near Vancouver Island every year.","opts":{"A":"15,000","B":"30,000","C":"20,000","D":"No one knows."},"ans":"C","exp":"«about 20,000 grey whales swim past the west coast of Vancouver Island»."},{"id":164,"variant":"ВАРИАНТ 10","section":"Чтение","num":44,"q":"The grey whales start their annual trip ...","opts":{"A":"on Vancouver Island.","B":"in the Arctic.","C":"somewhere in the open ocean.","D":"in Mexico."},"ans":"D","exp":"«The whales travel from Mexico to the Arctic and back again.»"},{"id":165,"variant":"ВАРИАНТ 10","section":"Чтение","num":45,"q":"According to the reading, it is easy for people to see the whales because ...","opts":{"A":"they use binoculars.","B":"the whales swim close to land.","C":"they are also swimming in the water.","D":"they fly over the whales in helicopters."},"ans":"B","exp":"«The whales travel very close to the shore»."},{"id":166,"variant":"ВАРИАНТ 10","section":"Чтение","num":46,"q":"The Nanaimo Bathtub Race happens ...","opts":{"A":"far off the north coast of Vancouver Island.","B":"on the south shore of Vancouver Island.","C":"on the west side of Vancouver Island.","D":"on the east side of Vancouver Island."},"ans":"D","exp":"«On the east coast of Vancouver Island... During the Nanaimo Bathtub Race...»"},{"id":167,"variant":"ВАРИАНТ 10","section":"Чтение","num":47,"q":"Every boat in the race ...","opts":{"A":"can carry three people.","B":"is made from a bathtub.","C":"gets a safety inspection.","D":"has sails."},"ans":"B","exp":"«in boats made from bathtubs!»"},{"id":168,"variant":"ВАРИАНТ 10","section":"Чтение","num":48,"q":"The Nanaimo Bathtub race ... over the last 50 years.","opts":{"A":"became less popular","B":"added bathtub boats in the beginning","C":"became serious","D":"had sailboats"},"ans":"C","exp":"«The race started as a silly event in 1967. Today... it is a serious sport.»"},{"id":169,"variant":"ВАРИАНТ 10","section":"Чтение","num":49,"q":"Dragon boat racing began in ...","opts":{"A":"China.","B":"British Columbia.","C":"the east coast of Canada.","D":"Japan."},"ans":"A","exp":"«Dragon boat racing started in China more than 2,000 years ago.»"},{"id":170,"variant":"ВАРИАНТ 10","section":"Чтение","num":50,"q":"The dragon boat festival ...","opts":{"A":"starts with races with only the fastest boats.","B":"begins with a ceremony so that the rowers can be strong.","C":"begins with music.","D":"begins with a movie about Expo 86."},"ans":"B","exp":"«The festival begins with a ceremony. The ceremony wakes up the dragon and gives the people and boats the dragon's strength.»"}];
+
+const AUDIO_URLS = {};
+for (let v = 1; v <= 10; v++) {
+  AUDIO_URLS["ВАРИАНТ " + v] = [
+    "https://psytest-kz.github.io/english-trainer/" + v + "-1.mp3",
+    "https://psytest-kz.github.io/english-trainer/" + v + "-2.mp3"
+  ];
+}
+
+const SECTION_CONFIG = {
+  "Аудирование": { color: "#3B82F6", bg: "#EFF6FF", label: "🎧 Аудирование" },
+  "Лексика":     { color: "#8B5CF6", bg: "#F5F3FF", label: "📝 Лексика/Грамматика" },
+  "Чтение":      { color: "#10B981", bg: "#ECFDF5", label: "📖 Чтение" },
+};
+
+const VARIANTS = [...new Set(RAW.map(q => q.variant))].sort((a,b) => parseInt(a.match(/\d+/)[0]) - parseInt(b.match(/\d+/)[0]));
+const STORAGE_KEY = "english_pt_v3";
+
+function loadStats() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {wrong:{},history:[]}; } catch { return {wrong:{},history:[]}; } }
+function saveStats(s) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch {} }
+function shuffle(arr) { const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]; } return a; }
+function el(tag, props={}, ...children) {
+  const e = document.createElement(tag);
+  Object.entries(props).forEach(([k,v]) => {
+    if (k === 'style' && typeof v === 'object') Object.assign(e.style, v);
+    else if (k === 'onClick') e.addEventListener('click', v);
+    else if (k === 'onChange') e.addEventListener('change', v);
+    else if (k === 'onInput') e.addEventListener('input', v);
+    else e[k] = v;
+  });
+  children.flat().forEach(c => { if (c != null) e.appendChild(typeof c === 'string' ? document.createTextNode(c) : c); });
+  return e;
+}
+
+// ── Audio Player ─────────────────────────────────────────────────────────
+function createAudioPlayer(variant) {
+  const urls = AUDIO_URLS[variant] || [];
+  if (!urls.length) return null;
+
+  let activeIdx = 0;
+  let audio = new Audio();
+  audio.preload = "none";
+
+  const container = el('div', {style:{background:"#0F2040",borderRadius:"16px",padding:"16px",marginBottom:"16px",border:"1px solid #1E4080"}});
+
+  const title = el('div', {style:{color:"#64748B",fontSize:"12px",fontWeight:"700",textTransform:"uppercase",letterSpacing:"1px",marginBottom:"10px"}}, "🎧 Аудирование — " + variant);
+
+  // Tab buttons
+  const tabRow = el('div', {style:{display:"flex",gap:"8px",marginBottom:"12px"}});
+  urls.forEach((_, i) => {
+    const btn = el('button', {
+      style:{flex:"1",padding:"10px",borderRadius:"10px",border:"none",cursor:"pointer",fontSize:"14px",fontWeight:"700",
+        background: i===0?"#3B82F6":"#1E293B", color: i===0?"#fff":"#64748B", minHeight:"44px"},
+      onClick: () => {
+        activeIdx = i;
+        audio.pause(); audio.src = urls[i]; audio.load();
+        playBtn.textContent = "▶"; timeDisplay.textContent = "0:00";
+        progress.style.width = "0%";
+        tabRow.querySelectorAll('button').forEach((b,j) => {
+          b.style.background = j===i?"#3B82F6":"#1E293B";
+          b.style.color = j===i?"#fff":"#64748B";
+        });
+      }
+    }, "Текст " + (i+1));
+    tabRow.appendChild(btn);
+  });
+
+  // Controls
+  const fmt = s => { if(!s||isNaN(s)) return "0:00"; return Math.floor(s/60)+":"+String(Math.floor(s%60)).padStart(2,"0"); };
+
+  const seekBack = el('button', {style:{background:"#1E293B",border:"none",color:"#94A3B8",cursor:"pointer",borderRadius:"10px",padding:"10px 14px",fontSize:"14px",minHeight:"48px",minWidth:"56px"}, onClick:()=>{ audio.currentTime=Math.max(0,audio.currentTime-10); }}, "↩10");
+
+  const playBtn = el('button', {style:{flex:"1",background:"#2563EB",border:"none",color:"#fff",cursor:"pointer",borderRadius:"12px",fontSize:"22px",fontWeight:"700",minHeight:"54px"},
+    onClick: () => {
+      if (!audio.src || audio.src === window.location.href) {
+        audio.src = urls[activeIdx];
+        audio.load();
+      }
+      if (audio.paused) {
+        audio.play().then(() => { playBtn.textContent = "⏸"; playBtn.style.background = "#DC2626"; }).catch(e => { console.log(e); });
+      } else {
+        audio.pause(); playBtn.textContent = "▶"; playBtn.style.background = "#2563EB";
+      }
+    }
+  }, "▶");
+
+  const seekFwd = el('button', {style:{background:"#1E293B",border:"none",color:"#94A3B8",cursor:"pointer",borderRadius:"10px",padding:"10px 14px",fontSize:"14px",minHeight:"48px",minWidth:"56px"}, onClick:()=>{ audio.currentTime=Math.min(audio.duration||0,audio.currentTime+10); }}, "10↪");
+
+  const controlRow = el('div', {style:{display:"flex",alignItems:"center",gap:"10px",marginBottom:"12px"}}, seekBack, playBtn, seekFwd);
+
+  // Progress bar
+  const timeDisplay = el('span', {style:{color:"#64748B",fontSize:"12px",minWidth:"38px",textAlign:"right"}}, "0:00");
+  const durDisplay = el('span', {style:{color:"#64748B",fontSize:"12px",minWidth:"38px"}}, "0:00");
+  const progressBg = el('div', {style:{flex:"1",height:"6px",background:"#1E293B",borderRadius:"3px",overflow:"hidden",cursor:"pointer"},
+    onClick: e => {
+      if (!audio.duration) return;
+      const rect = e.currentTarget.getBoundingClientRect();
+      audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
+    }
+  });
+  const progress = el('div', {style:{height:"100%",width:"0%",background:"#3B82F6",borderRadius:"3px",transition:"width 0.3s"}});
+  progressBg.appendChild(progress);
+  const progressRow = el('div', {style:{display:"flex",alignItems:"center",gap:"8px"}}, timeDisplay, progressBg, durDisplay);
+
+  audio.addEventListener('timeupdate', () => {
+    timeDisplay.textContent = fmt(audio.currentTime);
+    if (audio.duration) progress.style.width = (audio.currentTime/audio.duration*100)+"%";
+  });
+  audio.addEventListener('loadedmetadata', () => { durDisplay.textContent = fmt(audio.duration); });
+  audio.addEventListener('ended', () => { playBtn.textContent = "▶"; playBtn.style.background="#2563EB"; audio.currentTime=0; });
+  audio.addEventListener('pause', () => { playBtn.textContent = "▶"; playBtn.style.background="#2563EB"; });
+  audio.addEventListener('play', () => { playBtn.textContent = "⏸"; playBtn.style.background="#DC2626"; });
+
+  container.append(title, tabRow, controlRow, progressRow);
+  return container;
+}
+
+// ── Stats ────────────────────────────────────────────────────────────────
+function renderStats(onBack, onRetryWrong) {
+  const stats = loadStats();
+  const wrongIds = Object.keys(stats.wrong).filter(id => stats.wrong[id] > 0);
+  const history = (stats.history||[]).slice(-10).reverse();
+  const totalAttempts = history.reduce((s,h)=>s+h.total,0);
+  const totalCorrect = history.reduce((s,h)=>s+h.correct,0);
+  const avgPct = totalAttempts>0?Math.round(totalCorrect/totalAttempts*100):0;
+  const wrongQs = RAW.filter(q=>wrongIds.includes(String(q.id)));
+
+  const page = el('div',{style:{minHeight:"100vh",background:"#0F172A",padding:"20px 16px 40px"}});
+  const inner = el('div',{style:{maxWidth:"560px",margin:"0 auto"}});
+
+  const header = el('div',{style:{display:"flex",alignItems:"center",gap:"12px",marginBottom:"24px"}},
+    el('button',{style:{background:"none",border:"none",color:"#64748B",cursor:"pointer",fontSize:"22px",padding:"4px"},onClick:onBack},"←"),
+    el('h1',{style:{color:"#F8FAFC",fontSize:"20px",fontWeight:"800"}},"Моя статистика")
+  );
+
+  const card = (children) => {
+    const c = el('div',{style:{background:"#1E293B",borderRadius:"16px",padding:"18px 20px",border:"1px solid #334155",marginBottom:"16px"}});
+    children.forEach(ch=>c.appendChild(ch)); return c;
+  };
+  const sectionTitle = t => el('div',{style:{color:"#94A3B8",fontSize:"11px",fontWeight:"700",textTransform:"uppercase",letterSpacing:"1px",marginBottom:"12px"}},t);
+
+  const summaryRows = [["Сессий пройдено",history.length],["Вопросов решено",totalAttempts],["Средний результат",avgPct+"%"],["Ошибок в копилке",wrongIds.length]].map(([l,v])=>
+    el('div',{style:{display:"flex",justifyContent:"space-between",padding:"8px 0",borderBottom:"1px solid #1E293B"}},
+      el('span',{style:{color:"#CBD5E1",fontSize:"14px"}},l),
+      el('span',{style:{color:"#F8FAFC",fontSize:"14px",fontWeight:"700"}},String(v))
+    )
+  );
+
+  inner.append(header, card([sectionTitle("Общий итог"),...summaryRows]));
+
+  if (wrongQs.length>0) {
+    const retryBtn = el('button',{style:{width:"100%",padding:"13px",borderRadius:"12px",border:"none",cursor:"pointer",fontSize:"15px",fontWeight:"700",background:"linear-gradient(135deg,#EF4444,#DC2626)",color:"#fff",marginTop:"12px",minHeight:"50px"},onClick:()=>onRetryWrong(wrongQs)},"🔁 Повторить ошибки ("+wrongQs.length+")");
+    const items = wrongQs.slice(0,6).map(q=>
+      el('div',{style:{display:"flex",gap:"8px",padding:"7px 0",borderBottom:"1px solid #1A2540"}},
+        el('span',{},"❌"),
+        el('div',{},
+          el('div',{style:{color:"#CBD5E1",fontSize:"12px"}},q.q.length>55?q.q.slice(0,52)+"…":q.q),
+          el('div',{style:{color:"#475569",fontSize:"11px",marginTop:"2px"}},q.variant+" · №"+q.num)
+        )
+      )
+    );
+    inner.appendChild(card([sectionTitle("Ошибки ("+wrongQs.length+")"),...items,retryBtn]));
+  }
+
+  page.appendChild(inner);
+  return page;
+}
+
+// ── Quiz ─────────────────────────────────────────────────────────────────
+function renderQuiz(config, onFinish) {
+  const {mode,section,variant,count,retryWrong,retryList} = config;
+  const pool = retryWrong ? (retryList||[]) : RAW.filter(q=>(section==="all"||q.section===section)&&(variant==="all"||q.variant===variant));
+  const questions = (mode==="shuffle"?shuffle(pool):pool).slice(0,retryWrong?pool.length:count);
+
+  let idx=0, selected=null, results=[], touchStartX=null;
+  const stats = loadStats();
+
+  function render() {
+    const app = document.getElementById('app');
+    app.innerHTML='';
+
+    if (idx>=questions.length) {
+      // Results screen
+      const correct = results.filter(r=>r.ok).length;
+      const pct = Math.round(correct/results.length*100);
+      const grade = pct>=80?"Отлично! 🏆":pct>=60?"Хорошо 👍":"Нужно практиковаться 💪";
+      const wrongR = results.filter(r=>!r.ok);
+
+      const page = el('div',{style:{minHeight:"100vh",background:"#0F172A",display:"flex",alignItems:"center",justifyContent:"center",padding:"20px"}});
+      const inner = el('div',{style:{maxWidth:"480px",width:"100%",textAlign:"center"}});
+      inner.append(
+        el('div',{style:{fontSize:"56px",marginBottom:"12px"}},pct>=80?"🏆":pct>=60?"👍":"💪"),
+        el('h2',{style:{color:"#F8FAFC",fontSize:"26px",fontWeight:"800",marginBottom:"20px"}},grade)
+      );
+      const scoreCard = el('div',{style:{background:"#1E293B",borderRadius:"20px",padding:"24px",marginBottom:"20px",border:"1px solid #334155"}});
+      scoreCard.append(
+        el('div',{style:{fontSize:"52px",fontWeight:"900",color:pct>=80?"#10B981":pct>=60?"#F59E0B":"#EF4444"}},pct+"%"),
+        el('div',{style:{color:"#94A3B8",fontSize:"15px",marginTop:"4px"}},correct+" из "+results.length+" правильно")
+      );
+      if (wrongR.length>0) {
+        const errTitle = el('div',{style:{color:"#64748B",fontSize:"11px",fontWeight:"700",textTransform:"uppercase",letterSpacing:"1px",margin:"16px 0 8px",textAlign:"left"}}, "Ошибки");
+        scoreCard.appendChild(errTitle);
+        wrongR.forEach(r=>{
+          const row = el('div',{style:{display:"flex",alignItems:"center",gap:"8px",padding:"7px 0",borderBottom:"1px solid #1A2540",textAlign:"left"}},
+            el('span',{}, "❌"),
+            el('span',{style:{color:"#CBD5E1",fontSize:"12px",flex:"1"}}, r.q.length>50?r.q.slice(0,47)+"…":r.q),
+            el('span',{style:{color:"#475569",fontSize:"11px"}}, "→"+r.correct)
+          );
+          scoreCard.appendChild(row);
+        });
+      }
+      inner.appendChild(scoreCard);
+      const btnRow = el('div',{style:{display:"flex",gap:"10px"}},
+        el('button',{style:{flex:"1",padding:"14px",borderRadius:"12px",border:"none",cursor:"pointer",fontSize:"14px",fontWeight:"700",background:"#1E293B",color:"#94A3B8",minHeight:"50px"},onClick:onFinish},"← Меню"),
+        el('button',{style:{flex:"1",padding:"14px",borderRadius:"12px",border:"none",cursor:"pointer",fontSize:"14px",fontWeight:"700",background:"linear-gradient(135deg,#3B82F6,#8B5CF6)",color:"#fff",minHeight:"50px"},onClick:()=>{idx=0;selected=null;results=[];render();}}, "Ещё раз 🔄")
+      );
+      inner.appendChild(btnRow);
+      page.appendChild(inner);
+      app.appendChild(page);
+      return;
+    }
+
+    const q = questions[idx];
+    const answered = selected!==null;
+    const isCorrect = selected===q.ans;
+    const sconf = SECTION_CONFIG[q.section]||SECTION_CONFIG["Лексика"];
+    const progress_pct = (idx/questions.length)*100;
+
+    const page = el('div',{style:{minHeight:"100vh",background:"#0F172A",padding:"16px 14px 40px"}});
+    page.addEventListener('touchstart',e=>{ touchStartX=e.touches[0].clientX; });
+    page.addEventListener('touchend',e=>{ if(!answered||touchStartX===null)return; if(touchStartX-e.changedTouches[0].clientX>60)next(); touchStartX=null; });
+
+    const inner = el('div',{style:{maxWidth:"560px",margin:"0 auto"}});
+
+    // Progress bar
+    const progressBar = el('div',{style:{display:"flex",alignItems:"center",gap:"10px",marginBottom:"20px"}},
+      el('button',{style:{background:"none",border:"none",color:"#64748B",cursor:"pointer",fontSize:"22px",padding:"4px",flexShrink:"0"},onClick:onFinish},"←"),
+      el('div',{style:{flex:"1",height:"6px",background:"#1E293B",borderRadius:"3px",overflow:"hidden"}},
+        el('div',{style:{height:"100%",width:progress_pct+"%",background:"linear-gradient(90deg,#3B82F6,#8B5CF6)",borderRadius:"3px",transition:"width 0.3s"}},"")
+      ),
+      el('span',{style:{color:"#64748B",fontSize:"13px",fontWeight:"600",flexShrink:"0"}},(idx+1)+"/"+questions.length)
+    );
+    inner.appendChild(progressBar);
+
+    // Audio player for listening sections
+    if (q.section==="Аудирование") {
+      const player = createAudioPlayer(q.variant);
+      if (player) inner.appendChild(player);
+    }
+
+    // Badge
+    const badge = el('div',{style:{display:"inline-flex",alignItems:"center",gap:"6px",background:sconf.bg,color:sconf.color,borderRadius:"8px",padding:"4px 10px",fontSize:"12px",fontWeight:"700",marginBottom:"14px",border:"1px solid "+sconf.color+"30"}}, sconf.label+" · "+q.variant+" · №"+q.num);
+    inner.appendChild(badge);
+
+    // Question
+    const qBox = el('div',{style:{background:"#1E293B",borderRadius:"16px",padding:"20px 18px",marginBottom:"14px",border:"1px solid #334155"}},
+      el('p',{style:{color:"#F8FAFC",fontSize:"17px",fontWeight:"500",lineHeight:"1.65"}},q.q)
+    );
+    inner.appendChild(qBox);
+
+    // Options
+    const optsDiv = el('div',{style:{display:"flex",flexDirection:"column",gap:"10px",marginBottom:"18px"}});
+    Object.entries(q.opts).forEach(([letter,text])=>{
+      let bg="#1E293B",border="#334155",color="#CBD5E1",borderLeft="4px solid transparent";
+      if(answered){
+        if(letter===q.ans){bg="#052E16";border="#10B981";color="#10B981";borderLeft="4px solid #10B981";}
+        else if(letter===selected){bg="#1F0505";border="#EF4444";color="#EF4444";borderLeft="4px solid #EF4444";}
+        else{color="#475569";}
+      }
+      const optBtn = el('button',{
+        style:{display:"flex",alignItems:"center",gap:"14px",padding:"16px 18px",borderRadius:"14px",
+          border:"1.5px solid "+border,borderLeft:borderLeft,background:bg,cursor:answered?"default":"pointer",
+          textAlign:"left",minHeight:"56px",width:"100%"},
+        onClick:()=>{ if(answered)return; selected=letter; render(); }
+      },
+        el('span',{style:{width:"32px",height:"32px",borderRadius:"8px",border:"1.5px solid #334155",
+          display:"flex",alignItems:"center",justifyContent:"center",fontSize:"14px",fontWeight:"700",
+          flexShrink:"0",color:answered&&letter===q.ans?"#10B981":answered&&letter===selected?"#EF4444":"#64748B"}},letter),
+        el('span',{style:{color:color,fontSize:"15px",fontWeight:"500",lineHeight:"1.4",flex:"1"}},text),
+        answered&&letter===q.ans?el('span',{style:{marginLeft:"auto",fontSize:"18px"}},"✓"):"",
+        answered&&letter===selected&&letter!==q.ans?el('span',{style:{marginLeft:"auto",fontSize:"18px"}},"✗"):""
+      );
+      optsDiv.appendChild(optBtn);
+    });
+    inner.appendChild(optsDiv);
+
+    // Feedback
+    if(answered){
+      const fb = el('div',{style:{background:isCorrect?"#052E16":"#1F0505",borderRadius:"12px",padding:"14px 16px",marginBottom:"14px",border:"1px solid "+(isCorrect?"#10B981":"#EF4444")}});
+      fb.appendChild(el('div',{style:{color:isCorrect?"#10B981":"#EF4444",fontWeight:"700",fontSize:"15px",marginBottom:isCorrect?"0":"6px"}},isCorrect?"✅ Верно!":"❌ Правильный ответ: "+q.ans+") "+q.opts[q.ans]));
+      if(!isCorrect&&q.exp) fb.appendChild(el('p',{style:{color:"#94A3B8",fontSize:"13px",lineHeight:"1.55",marginTop:"6px"}},q.exp));
+      inner.appendChild(fb);
+
+      const nextBtn = el('button',{
+        style:{width:"100%",padding:"16px",borderRadius:"14px",border:"none",cursor:"pointer",fontSize:"16px",fontWeight:"700",background:"linear-gradient(135deg,#3B82F6,#8B5CF6)",color:"#fff",minHeight:"54px"},
+        onClick:next
+      },idx+1>=questions.length?"Завершить →":"Следующий →");
+      inner.appendChild(nextBtn);
+    } else {
+      inner.appendChild(el('div',{style:{textAlign:"center",color:"#334155",fontSize:"12px",marginTop:"4px"}}, "свайп влево → следующий"));
+    }
+
+    page.appendChild(inner);
+    app.appendChild(page);
+  }
+
+  function next(){
+    const q=questions[idx];
+    results.push({q:q.q,selected,correct:q.ans,ok:selected===q.ans,id:q.id});
+    const s=loadStats();
+    if(selected!==q.ans){ s.wrong[q.id]=(s.wrong[q.id]||0)+1; }
+    else{ if(s.wrong[q.id]){ s.wrong[q.id]=Math.max(0,s.wrong[q.id]-1); if(s.wrong[q.id]===0)delete s.wrong[q.id]; } }
+    if(idx+1>=questions.length){
+      const correct=results.filter(r=>r.ok).length+1;
+      s.history=[...(s.history||[]),{date:new Date().toLocaleDateString("ru-RU",{day:"2-digit",month:"2-digit"}),section:section||"all",correct,total:questions.length}].slice(-50);
+    }
+    saveStats(s);
+    idx++; selected=null; render();
+  }
+
+  render();
+}
+
+// ── Home ─────────────────────────────────────────────────────────────────
+function renderHome() {
+  let mode="all", section="all", variant="all", count=20;
+
+  function getTotal(){ return RAW.filter(q=>(section==="all"||q.section===section)&&(variant==="all"||q.variant===variant)).length; }
+
+  function render(){
+    const app=document.getElementById('app');
+    app.innerHTML='';
+    const total=getTotal();
+    const stats=loadStats();
+    const wrongCount=Object.keys(stats.wrong).filter(id=>stats.wrong[id]>0).length;
+
+    const page=el('div',{style:{minHeight:"100vh",background:"linear-gradient(135deg,#0F172A,#1E293B,#0F172A)",display:"flex",alignItems:"center",justifyContent:"center",padding:"24px 16px"}});
+    const inner=el('div',{style:{maxWidth:"520px",width:"100%"}});
+
+    inner.append(
+      el('div',{style:{textAlign:"center",marginBottom:"32px"}},
+        el('div',{style:{fontSize:"52px",marginBottom:"10px"}},"🇬🇧"),
+        el('h1',{style:{color:"#F8FAFC",fontSize:"26px",fontWeight:"800",letterSpacing:"-0.5px"}},"English ПТ Тренажёр"),
+        el('p',{style:{color:"#94A3B8",fontSize:"14px",marginTop:"8px"}},RAW.length+" вопросов · 10 вариантов")
+      )
+    );
+
+    const card=el('div',{style:{background:"#1E293B",borderRadius:"20px",padding:"24px 20px",border:"1px solid #334155"}});
+
+    function chipGroup(items, getValue, setValue){
+      const row=el('div',{style:{display:"flex",gap:"8px",marginTop:"8px",flexWrap:"wrap"}});
+      items.forEach(([val,lbl])=>{
+        const btn=el('button',{
+          style:{padding:"10px 14px",borderRadius:"10px",border:"none",cursor:"pointer",fontSize:"14px",fontWeight:"600",
+            background:getValue()===val?"#3B82F6":"#0F172A",color:getValue()===val?"#fff":"#64748B",minHeight:"44px"},
+          onClick:()=>{ setValue(val); render(); }
+        },lbl);
+        row.appendChild(btn);
+      });
+      return row;
+    }
+
+    const label=t=>el('div',{style:{color:"#94A3B8",fontSize:"12px",fontWeight:"600",textTransform:"uppercase",letterSpacing:"1px"}},t);
+
+    card.append(
+      el('div',{style:{marginBottom:"20px"}},
+        label("Раздел"),
+        chipGroup([["all","Все"],["Аудирование","🎧 Аудирование"],["Лексика","📝 Лексика"],["Чтение","📖 Чтение"]],()=>section,v=>{section=v;})
+      ),
+      el('div',{style:{marginBottom:"20px"}},
+        label("Вариант"),
+        chipGroup([["all","Все"],...VARIANTS.map(v=>[v,v.match(/\d+/)[0]])],()=>variant,v=>{variant=v;})
+      ),
+      el('div',{style:{marginBottom:"20px"}},
+        label("Режим"),
+        chipGroup([["all","По порядку"],["shuffle","Случайный"]],()=>mode,v=>{mode=v;})
+      )
+    );
+
+    const countLabel=el('div',{style:{color:"#94A3B8",fontSize:"12px",fontWeight:"600",textTransform:"uppercase",letterSpacing:"1px"}}, "Вопросов: ");
+    const countVal=el('span',{style:{color:"#F8FAFC"}},Math.min(count,total)+" из "+total);
+    countLabel.appendChild(countVal);
+    const slider=el('input',{type:"range",min:"5",max:String(Math.min(total,50)),value:String(Math.min(count,total)),
+      style:{width:"100%",marginTop:"10px",accentColor:"#3B82F6",height:"6px"},
+      onInput:e=>{ count=parseInt(e.target.value); countVal.textContent=Math.min(count,getTotal())+" из "+getTotal(); }
+    });
+    card.append(el('div',{style:{marginBottom:"24px"}},countLabel,slider));
+
+    card.append(
+      el('button',{style:{width:"100%",padding:"16px",borderRadius:"14px",border:"none",cursor:"pointer",fontSize:"17px",fontWeight:"800",background:"linear-gradient(135deg,#3B82F6,#8B5CF6)",color:"#fff",marginBottom:"10px",minHeight:"54px"},
+        onClick:()=>renderQuiz({mode,section,variant,count:Math.min(count,getTotal()),retryWrong:false},renderHome)
+      },"Начать тест →"),
+      el('button',{style:{width:"100%",padding:"13px",borderRadius:"14px",border:"1px solid #334155",cursor:"pointer",fontSize:"14px",fontWeight:"600",background:"transparent",color:"#94A3B8",minHeight:"48px"},
+        onClick:()=>{ document.getElementById('app').innerHTML=''; document.getElementById('app').appendChild(renderStats(renderHome,(wrongList)=>renderQuiz({mode:"shuffle",section:"all",variant:"all",count:wrongList.length,retryWrong:true,retryList:wrongList},renderHome))); }
+      },"📊 Моя статистика"+(wrongCount>0?" · "+wrongCount+" ошибок":""))
+    );
+
+    inner.appendChild(card);
+    page.appendChild(inner);
+    app.appendChild(page);
+  }
+
+  render();
+}
+
+// ── Start ─────────────────────────────────────────────────────────────────
+renderHome();
+</script>
+</body>
+</html>
